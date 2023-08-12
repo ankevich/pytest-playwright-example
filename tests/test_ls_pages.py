@@ -55,7 +55,11 @@ def test_login_page(page: Page):
     page.locator("p").filter(has_text="Restaurant POS (L-Series)").click()
     page.locator("p").filter(has_text="eCommerce (E-Series)").click()
 
-    test_values = ["Retail POS (X-Series) formerly Vend", "Restaurant POS (L-Series)", "eCommerce (E-Series)"]
+    test_values = [
+        "Retail POS (X-Series) formerly Vend",
+        "Restaurant POS (L-Series)",
+        "eCommerce (E-Series)",
+    ]
     for test_value in test_values:
         logger.info(f"Checking for {test_value}")
         test_box = page.locator("p").filter(has_text=test_value)
@@ -64,7 +68,10 @@ def test_login_page(page: Page):
         expect(test_box).to_have_text(test_value, use_inner_text=True)
 
 
-@pytest.mark.parametrize(["email", "case"], [("test@example.com", "positive"), ("testNotAnEmail", "negative")])
+@pytest.mark.parametrize(
+    ["email", "case"],
+    [("test@example.com", "positive"), ("testNotAnEmail", "negative")],
+)
 def test_email_input(page: Page, email: str, case: str):
     """
     Example of a parametrized test that checks the email input
@@ -72,7 +79,7 @@ def test_email_input(page: Page, email: str, case: str):
     page.goto("https://www.lightspeedhq.com/partners/partner-application/")
     email_form = page.query_selector("#leadform-1_email")
     email_form.fill(email)
-    page.mouse.click(1, 1) # click away from the form to trigger the input validation
+    page.mouse.click(1, 1)  # click away from the form to trigger the input validation
     error_message = page.get_by_text("Please enter a valid email address")
 
     if case == "negative":
@@ -80,7 +87,10 @@ def test_email_input(page: Page, email: str, case: str):
     else:
         expect(error_message).to_be_hidden()
 
-@pytest.mark.parametrize(["phone", "case"], [("874294834", "positive"), ("testNotAPhone", "negative")])
+
+@pytest.mark.parametrize(
+    ["phone", "case"], [("874294834", "positive"), ("testNotAPhone", "negative")]
+)
 def test_phone_input(page: Page, phone: str, case: str):
     """
     Example of a parametrized test that checks the phone input
