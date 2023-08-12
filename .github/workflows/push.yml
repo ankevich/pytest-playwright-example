@@ -1,0 +1,36 @@
+name: push
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main]
+
+env:
+  HATCH_VERSION: 1.7.0
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        pyVersion: [ '3.10' ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          cache: 'pip'
+          cache-dependency-path: '**/pyproject.toml'
+          python-version: ${{ matrix.pyVersion }}
+
+      - name: Install hatch
+        run: pip install hatch==$HATCH_VERSION
+      
+      - name: Install playwright 
+        run: playwright install
+
+      - name: Run tests
+        run: hatch run test
