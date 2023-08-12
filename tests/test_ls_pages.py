@@ -1,3 +1,4 @@
+import time
 from playwright.sync_api import Page, expect
 import re
 import pytest
@@ -29,9 +30,15 @@ def close_popup_if_exists(page: Page):
     """
     This function will close the popup if it exists
     """
-    locator = page.get_by_role("button", name="Close")
-    if locator:
-        locator.click()
+    popup_locator = page.get_by_role("button", name="Close")
+    time.sleep(5) # wait for the popup to appear
+
+    if popup_locator.is_visible():
+        logger.info("Popup found, closing it")
+        popup_locator.click(timeout=10000)
+    else:
+        logger.info("Popup not found")
+
 
 def test_watch_demo(page: Page):
     """
@@ -56,7 +63,7 @@ def test_login_page(page: Page):
     """
     # close the advertisement popup
     close_popup_if_exists(page)
-    
+
     page.get_by_role("menuitem", name="Login").click()
 
     page.get_by_text("Retail POS (X-Series) formerly Vend").click()
