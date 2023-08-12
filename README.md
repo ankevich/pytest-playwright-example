@@ -1,21 +1,23 @@
-# ls example
+# Testing example with Playwright and Pytest
 
-[![PyPI - Version](https://img.shields.io/pypi/v/ls-example.svg)](https://pypi.org/project/ls-example)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ls-example.svg)](https://pypi.org/project/ls-example)
-
------
-
-**Table of Contents**
-
-- [Installation](#installation)
-- [License](#license)
 
 ## Installation
 
-```console
-pip install ls-example
+```bash
+pip install hatch 
+hatch env create
+playwright install
 ```
 
-## License
+## Running tests
 
-`ls-example` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+```bash
+pytest tests
+```
+
+## Technologies used
+
+- [Playwright](https://playwright.dev/) - for browser automation and testing
+- [Pytest](https://docs.pytest.org/en/stable/) - testing framework
+- [Hatch](https://github.com/pypa/hatch) - for creating and managing virtual environments
+- [Github Actions](https://github.com/features/actions) - for CI/CD
