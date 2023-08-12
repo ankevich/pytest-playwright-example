@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ls-example"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = []
+authors = [
+  { name = "Annie", email = "overheads165@gmail.com" },
+]
+classifiers = [
+  "Programming Language :: Python",
+]
+dependencies = [
+  "pytest-playwright",
+  "pytest",
+  "loguru"
+]
+
+[tool.hatch.version]
+path = "src/ls_example/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
