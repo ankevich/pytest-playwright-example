@@ -31,7 +31,7 @@ def close_popup_if_exists(page: Page):
     This function will close the popup if it exists
     """
     popup_locator = page.get_by_role("button", name="Close")
-    time.sleep(5) # wait for the popup to appear
+    time.sleep(5)  # wait for the popup to appear
 
     if popup_locator.is_visible():
         logger.info("Popup found, closing it")
@@ -111,9 +111,14 @@ def test_phone_input(page: Page, phone: str, case: str):
     Example of a parametrized test that checks the phone input
     """
     page.goto("https://www.lightspeedhq.com/partners/partner-application/")
+    # preset the country code
+    page.get_by_title("Germany (Deutschland): +49").get_by_text("+49").click()
+    page.get_by_role("option", name="Germany (Deutschland)+49").click()
+
+    # fill the form
     phone_form = page.query_selector("#leadform-1_phone")
     phone_form.fill(phone)
-    page.mouse.click(1, 1)
+    page.mouse.click(1, 1) # click away from the form to trigger the input validation
     error_message = page.get_by_text("Please enter a valid phone number")
 
     if case == "negative":
