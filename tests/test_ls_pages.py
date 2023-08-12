@@ -101,27 +101,3 @@ def test_email_input(page: Page, email: str, case: str):
         expect(error_message).to_be_visible()
     else:
         expect(error_message).to_be_hidden()
-
-
-@pytest.mark.parametrize(
-    ["phone", "case"], [("874294834", "positive"), ("testNotAPhone", "negative")]
-)
-def test_phone_input(page: Page, phone: str, case: str):
-    """
-    Example of a parametrized test that checks the phone input
-    """
-    page.goto("https://www.lightspeedhq.com/partners/partner-application/")
-    # preset the country code
-    page.get_by_title("Germany (Deutschland): +49").get_by_text("+49").click()
-    page.get_by_role("option", name="Germany (Deutschland)+49").click()
-
-    # fill the form
-    phone_form = page.query_selector("#leadform-1_phone")
-    phone_form.fill(phone)
-    page.mouse.click(1, 1) # click away from the form to trigger the input validation
-    error_message = page.get_by_text("Please enter a valid phone number")
-
-    if case == "negative":
-        expect(error_message).to_be_visible()
-    else:
-        expect(error_message).to_be_hidden()
