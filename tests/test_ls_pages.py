@@ -25,12 +25,20 @@ def test_page_title(page: Page):
     expect(page).to_have_title(re.compile("Lightspeed"))
 
 
+def close_popup_if_exists(page: Page):
+    """
+    This function will close the popup if it exists
+    """
+    locator = page.get_by_role("button", name="Close")
+    if locator:
+        locator.click()
+
 def test_watch_demo(page: Page):
     """
     This test goes to the Watch demo page and verifies that boxes are visible
     """
     # close the advertisement popup
-    page.get_by_role("button", name="Close").click()
+    close_popup_if_exists(page)
     # click the watch demo link
     page.get_by_role("link", name="Watch a demo").first.click()
     test_values = ["Retail", "Restaurant", "Golf"]
@@ -47,8 +55,8 @@ def test_login_page(page: Page):
     This test verifies that after clicking the login, we see the correct boxes
     """
     # close the advertisement popup
-    page.get_by_role("button", name="Close").click()
-
+    close_popup_if_exists(page)
+    
     page.get_by_role("menuitem", name="Login").click()
 
     page.get_by_text("Retail POS (X-Series) formerly Vend").click()
