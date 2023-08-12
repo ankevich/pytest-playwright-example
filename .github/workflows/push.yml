@@ -30,7 +30,7 @@ jobs:
         run: pip install hatch==$HATCH_VERSION
       
       - name: Install playwright 
-        run: playwright install
+        run: hatch run playwright install
 
       - name: Run tests
         run: hatch run test
