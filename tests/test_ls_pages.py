@@ -8,6 +8,10 @@ BASE_URL = "https://www.lightspeedhq.com/"
 
 @pytest.fixture(scope="function", autouse=True)
 def to_intro_page(page: Page):
+    """
+    This fixture will go to the base URL after each test.
+    If required, inside the test use page.goto
+    """
     logger.info(f"Going to the base URL {BASE_URL}")
     # Go to the starting url before each test.
     page.goto(BASE_URL)
@@ -15,15 +19,20 @@ def to_intro_page(page: Page):
 
 
 def test_page_title(page: Page):
+    """
+    Simple test to verify the page title
+    """
     expect(page).to_have_title(re.compile("Lightspeed"))
 
 
 def test_watch_demo(page: Page):
-    # close the popup
+    """
+    This test goes to the Watch demo page and verifies that boxes are visible
+    """
+    # close the advertisement popup
     page.get_by_role("button", name="Close").click()
     # click the watch demo link
     page.get_by_role("link", name="Watch a demo").first.click()
-    # check that retail box is visible
     test_values = ["Retail", "Restaurant", "Golf"]
     for test_value in test_values:
         logger.info(f"Checking for {test_value}")
@@ -34,7 +43,12 @@ def test_watch_demo(page: Page):
 
 
 def test_login_page(page: Page):
+    """
+    This test verifies that after clicking the login, we see the correct boxes
+    """
+    # close the advertisement popup
     page.get_by_role("button", name="Close").click()
+
     page.get_by_role("menuitem", name="Login").click()
 
     page.get_by_text("Retail POS (X-Series) formerly Vend").click()
@@ -52,6 +66,9 @@ def test_login_page(page: Page):
 
 @pytest.mark.parametrize(["email", "case"], [("test@example.com", "positive"), ("testNotAnEmail", "negative")])
 def test_email_input(page: Page, email: str, case: str):
+    """
+    Example of a parametrized test that checks the email input
+    """
     page.goto("https://www.lightspeedhq.com/partners/partner-application/")
     email_form = page.query_selector("#leadform-1_email")
     email_form.fill(email)
@@ -65,6 +82,9 @@ def test_email_input(page: Page, email: str, case: str):
 
 @pytest.mark.parametrize(["phone", "case"], [("874294834", "positive"), ("testNotAPhone", "negative")])
 def test_phone_input(page: Page, phone: str, case: str):
+    """
+    Example of a parametrized test that checks the phone input
+    """
     page.goto("https://www.lightspeedhq.com/partners/partner-application/")
     phone_form = page.query_selector("#leadform-1_phone")
     phone_form.fill(phone)
@@ -75,4 +95,3 @@ def test_phone_input(page: Page, phone: str, case: str):
         expect(error_message).to_be_visible()
     else:
         expect(error_message).to_be_hidden()
-        
